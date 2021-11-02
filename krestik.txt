@@ -1,0 +1,94 @@
+def greet():
+    print("!!!!!!!!!!!!!!!!!!!!!!!")
+    print("Добро пожаловать в игру ")
+    print("Крести и нолик")
+    print("формат игры: Х Y")
+    print("вводите две координаты")
+    print("х - номер столбца")
+    print("у - номер строки")
+
+
+field = [[" "]*3 for i in range(3)]
+
+def show():
+    print(f"  | 0 | 1 | 2 |")
+    print("  -------------")
+    for i in range(3):
+        row_pillar = " | ".join(field[i])
+        print(f"{i} | {row_pillar} |")
+        print("  -------------")
+
+greet()
+def ask():
+    while True:
+        number = input("    Ваш ход   ").split()
+        if len(number) != 2:
+            print("Введите 2 цифры!")
+            continue
+
+        x, y = number
+
+        if not (x.isdigit()) or not (y.isdigit()):
+            print("Введите только цифры")
+            continue
+
+        x, y = int(x), int(y)
+
+        if x < 0 or x > 2 or y < 0 or y > 2:
+            print("Клетка внедиапозона")
+            continue
+
+        if field[x][y] != " ":
+            print("Клетка занята")
+            continue
+
+        return x, y
+
+
+def chek():
+    comb_chek = (((0, 0), (0, 1), (0, 2)), ((1, 0), (1, 1), (1, 2)), ((2, 0), (2, 1), (2, 2)),
+                 ((0, 0), (1, 0), (2, 0)), ((0, 1), (1, 1), (2, 1)), ((0, 2), (1, 2), (2, 2)),
+                 ((0, 2), (1, 1), (2, 0)), ((0, 0), (1, 1), (2, 2)))
+
+    for comb in comb_chek:
+
+        symbol = []
+
+        for a in comb:
+            symbol.append(field[a[0]][a[1]])
+
+        if symbol == ["X", "X", "X"]:
+            print("Выйграл игрок X")
+            return True
+        if symbol == ["0", "0", "0"]:
+            print("Выйграл игрок 0")
+            return True
+
+    return False
+
+
+count = 0
+while True:
+    count += 1
+
+    show()
+
+    if count % 2 == 1:
+        print("Ход игрока x")
+    else:
+        print("Ход игрока 0")
+
+    x, y = ask()
+
+    if count % 2 == 1:
+        field[x][y] = "X"
+    else:
+        field[x][y] = "0"
+
+    if chek():
+        break
+
+    if count == 9:
+        print("         Поздравляю у Вас Ничья!!!!")
+        break
+
